@@ -1,0 +1,49 @@
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: http-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: http-server
+  template:
+    metadata:
+      labels:
+        app: http-server
+    spec:
+      containers:
+      - name: http-server-go
+        image: golang:1.17.3
+        command: [ "/bin/bash", "-c", "--" ]
+        args: [ "go run /go/http-server/http-server.go" ]
+        ports:
+        - containerPort: 9090
+        volumeMounts:
+        - mountPath: /go/http-server
+          readOnly: true
+          name: http-server
+      - name: nginx
+        image: nginx:1.20.2-alpine
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - mountPath: /etc/nginx/conf.d/
+          readOnly: true
+          name: nginx-conf
+      volumes:
+      - name: http-server
+        configMap:
+          name: http-server
+          items:
+            - key: http-server.go
+              path: http-server.go
+      - name: nginx-conf
+        configMap:
+          name: http-server
+          items:
+            - key: default.conf
+              path: default.conf
+

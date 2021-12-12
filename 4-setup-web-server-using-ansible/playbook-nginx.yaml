@@ -1,0 +1,78 @@
+--- # ansible-playbook playbook-nginx.yml -i hosts
+- hosts: servers
+  become: yes
+  become_method: sudo
+  become_user: root
+
+  pre_tasks:
+    - name: Disable SSH password authentication
+      ansible.builtin.lineinfile:
+        path: /etc/ssh/sshd_config
+        regexp: '^#PasswordAuthentication yes'
+        line: 'PasswordAuthentication no'
+      notify: restart SSHd
+
+    - name: Set SSH MACs
+      ansible.builtin.lineinfile:
+        path: /etc/ssh/sshd_config
+        state: present
+        line: 'MACs hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com,umac-128-etm@openssh.com,hmac-sha2-512,hmac-sha2-256,umac-128@openssh.com'
+      notify: restart SSHd
+
+    - name: Set SSH KexAlgorithms
+      ansible.builtin.lineinfile:
+        path: /etc/ssh/sshd_config
+        state: present
+        line: 'KexAlgorithms curve25519-sha256@libssh.org,diffie-hellman-group-exchange-sha256'
+      notify: restart SSHd
+
+    - name: Set SSH Ciphers
+      ansible.builtin.lineinfile:
+        path: /etc/ssh/sshd_config
+        state: present
+        line: 'Ciphers chacha20-poly1305@openssh.com,aes256-gcm@openssh.com,aes128-gcm@openssh.com,aes256-ctr,aes192-ctr,aes128-ctr'
+      notify: restart SSHd
+  
+    - name: Set HostKeyAlgorithms
+      ansible.builtin.lineinfile:
+        path: /etc/ssh/sshd_config
+        state: present
+        line: 'HostKeyAlgorithms ssh-ed25519-cert-v01@openssh.com,ssh-rsa-cert-v01@openssh.com,ssh-ed25519,ssh-rsa'
+      notify: restart SSHd
+
+  tasks:
+    - name: "apt-get update"
+      apt:
+        update_cache: yes
+        cache_valid_time: 3600
+
+    - name: "install nginx"
+      apt:
+        name: ['nginx=1.18.*']
+        state: present
+
+    - name: Update nginx default page
+      ansible.builtin.lineinfile:
+        path: /var/www/html/index.nginx-debian.html
+        regexp: '^Listen '
+        insertafter: '<p><em>Thank you for using nginx.</em></p>'
+        line: '<p><em>Current date in GMT format: date_gmt </em></p>'
+      notify: restart nginx
+    
+    - name: Update nginx default configuration
+      ansible.builtin.lineinfile:
+        path: /etc/nginx/sites-enabled/default
+        firstmatch: yes
+        insertafter: 'location / {'
+        line: '		sub_filter date_gmt $date_gmt;'
+      notify: restart nginx
+
+  handlers:
+    - name: restart nginx
+      service:
+        name: nginx
+        state: restarted
+    - name: restart SSHd
+      service:
+        name: sshd
+        state: restarted

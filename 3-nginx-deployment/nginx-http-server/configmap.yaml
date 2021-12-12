@@ -1,0 +1,10 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: http-server
+data:
+  http-server.go: |
+#$(cat http-server.go | sed 's/^/    /')
+  default.conf: |
+#$(cat default.conf | sed 's/^/    /')

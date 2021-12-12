@@ -1,0 +1,615 @@
+Started by user unknown or anonymous
+Obtained 5-jenkins-pipeline/Jenkinsfile from git https://github.com/DenesCs/devops-tasks.git
+[Pipeline] Start of Pipeline
+[Pipeline] node
+Running on Jenkins in /var/lib/jenkins/workspace/build-yaml-cpp
+[Pipeline] {
+[Pipeline] deleteDir
+[Pipeline] stage
+[Pipeline] { (Prepare environment)
+[Pipeline] checkout
+Selected Git installation does not exist. Using Default
+The recommended git tool is: NONE
+No credentials specified
+Cloning the remote Git repository
+Cloning repository https://github.com/DenesCs/devops-tasks.git
+ > git init /var/lib/jenkins/workspace/build-yaml-cpp # timeout=10
+Fetching upstream changes from https://github.com/DenesCs/devops-tasks.git
+ > git --version # timeout=10
+ > git --version # 'git version 2.25.1'
+ > git fetch --tags --force --progress -- https://github.com/DenesCs/devops-tasks.git +refs/heads/*:refs/remotes/origin/* # timeout=10
+ > git config remote.origin.url https://github.com/DenesCs/devops-tasks.git # timeout=10
+ > git config --add remote.origin.fetch +refs/heads/*:refs/remotes/origin/* # timeout=10
+Avoid second fetch
+ > git rev-parse refs/remotes/origin/main^{commit} # timeout=10
+Checking out Revision d099346b638de5527442448886f78e348f46c772 (refs/remotes/origin/main)
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f d099346b638de5527442448886f78e348f46c772 # timeout=10
+Commit message: "Test archive artifacts"
+ > git rev-list --no-walk 3a8e96e47e462f045d9ac328d4e0df6d28b76a39 # timeout=10
+[Pipeline] isUnix
+[Pipeline] sh
++ docker build -t yaml-cpp-builder:0.1 ./5-jenkins-pipeline
+Sending build context to Docker daemon  6.144kB
+
+Step 1/3 : FROM public.ecr.aws/lts/ubuntu:20.04_stable
+ ---> 18500c01c416
+Step 2/3 : ENV DEBIAN_FRONTEND=noninteractive
+ ---> Using cache
+ ---> fccf50f8cb99
+Step 3/3 : RUN apt update && apt install -y cmake build-essential
+ ---> Using cache
+ ---> 48863f8f9f1d
+Successfully built 48863f8f9f1d
+Successfully tagged yaml-cpp-builder:0.1
+[Pipeline] sh
++ git clone --depth 1 https://github.com/jbeder/yaml-cpp.git
+Cloning into 'yaml-cpp'...
+[Pipeline] sh
++ mkdir yaml-cpp/build
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Build)
+[Pipeline] isUnix
+[Pipeline] sh
++ docker inspect -f . yaml-cpp-builder:0.1
+.
+[Pipeline] withDockerContainer
+Jenkins does not seem to be running inside a container
+$ docker run -t -d -u 113:120 --rm --cap-drop=all --memory=2g --cpus=2 -v /var/lib/jenkins/workspace/build-yaml-cpp/yaml-cpp:/yaml-cpp -w /var/lib/jenkins/workspace/build-yaml-cpp -v /var/lib/jenkins/workspace/build-yaml-cpp:/var/lib/jenkins/workspace/build-yaml-cpp:rw,z -v /var/lib/jenkins/workspace/build-yaml-cpp@tmp:/var/lib/jenkins/workspace/build-yaml-cpp@tmp:rw,z -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** yaml-cpp-builder:0.1 cat
+$ docker top 8ffae092df70463506e3ef2b70ecb3dc6c092204f9f8d594a046a706abb9bb7d -eo pid,comm
+[Pipeline] {
+[Pipeline] dir
+Running in /var/lib/jenkins/workspace/build-yaml-cpp/yaml-cpp/build
+[Pipeline] {
+[Pipeline] sh
++ cmake ..
+-- The CXX compiler identification is GNU 9.3.0
+-- Check for working CXX compiler: /usr/bin/c++
+-- Check for working CXX compiler: /usr/bin/c++ -- works
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Looking for C++ include pthread.h
+-- Looking for C++ include pthread.h - found
+-- Performing Test CMAKE_HAVE_LIBC_PTHREAD
+-- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Failed
+-- Looking for pthread_create in pthreads
+-- Looking for pthread_create in pthreads - not found
+-- Looking for pthread_create in pthread
+-- Looking for pthread_create in pthread - found
+-- Found Threads: TRUE  
+-- The C compiler identification is GNU 9.3.0
+-- Check for working C compiler: /usr/bin/cc
+-- Check for working C compiler: /usr/bin/cc -- works
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Could NOT find PythonInterp (missing: PYTHON_EXECUTABLE) 
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /var/lib/jenkins/workspace/build-yaml-cpp/yaml-cpp/build
++ make
+Scanning dependencies of target yaml-cpp
+[  1%] Building CXX object CMakeFiles/yaml-cpp.dir/src/contrib/graphbuilder.cpp.o
+[  3%] Building CXX object CMakeFiles/yaml-cpp.dir/src/contrib/graphbuilderadapter.cpp.o
+[  4%] Building CXX object CMakeFiles/yaml-cpp.dir/src/binary.cpp.o
+[  6%] Building CXX object CMakeFiles/yaml-cpp.dir/src/convert.cpp.o
+In file included from /var/lib/jenkins/workspace/build-yaml-cpp/yaml-cpp/include/yaml-cpp/node/convert.h:20,
+                 from /var/lib/jenkins/workspace/build-yaml-cpp/yaml-cpp/src/convert.cpp:3:
+/var/lib/jenkins/workspace/build-yaml-cpp/yaml-cpp/include/yaml-cpp/node/impl.h: In member function 'YAML::Node& YAML::Node::operator=(const T&)':
+/var/lib/jenkins/workspace/build-yaml-cpp/yaml-cpp/include/yaml-cpp/node/impl.h:206:11: warning: 'operator=' should return a reference to '*this' [-Weffc++]
+  206 |   return *this;
+      |           ^~~~
+[  8%] Building CXX object CMakeFiles/yaml-cpp.dir/src/depthguard.cpp.o
+[  9%] Building CXX object CMakeFiles/yaml-cpp.dir/src/directives.cpp.o
+[ 11%] Building CXX object CMakeFiles/yaml-cpp.dir/src/emit.cpp.o
+[ 13%] Building CXX object CMakeFiles/yaml-cpp.dir/src/emitfromevents.cpp.o
+[ 14%] Building CXX object CMakeFiles/yaml-cpp.dir/src/emitter.cpp.o
+[ 16%] Building CXX object CMakeFiles/yaml-cpp.dir/src/emitterstate.cpp.o
+[ 18%] Building CXX object CMakeFiles/yaml-cpp.dir/src/emitterutils.cpp.o
+[ 19%] Building CXX object CMakeFiles/yaml-cpp.dir/src/exceptions.cpp.o
+[ 21%] Building CXX object CMakeFiles/yaml-cpp.dir/src/exp.cpp.o
+[ 22%] Building CXX object CMakeFiles/yaml-cpp.dir/src/memory.cpp.o
+[ 24%] Building CXX object CMakeFiles/yaml-cpp.dir/src/node.cpp.o
+[ 26%] Building CXX object CMakeFiles/yaml-cpp.dir/src/node_data.cpp.o
+[ 27%] Building CXX object CMakeFiles/yaml-cpp.dir/src/nodebuilder.cpp.o
+In file included from /var/lib/jenkins/workspace/build-yaml-cpp/yaml-cpp/src/nodebuilder.cpp:5:
+/var/lib/jenkins/workspace/build-yaml-cpp/yaml-cpp/include/yaml-cpp/node/impl.h: In member function 'YAML::Node& YAML::Node::operator=(const T&)':
+/var/lib/jenkins/workspace/build-yaml-cpp/yaml-cpp/include/yaml-cpp/node/impl.h:206:11: warning: 'operator=' should return a reference to '*this' [-Weffc++]
+  206 |   return *this;
+      |           ^~~~
+[ 29%] Building CXX object CMakeFiles/yaml-cpp.dir/src/nodeevents.cpp.o
+[ 31%] Building CXX object CMakeFiles/yaml-cpp.dir/src/null.cpp.o
+[ 32%] Building CXX object CMakeFiles/yaml-cpp.dir/src/ostream_wrapper.cpp.o
+[ 34%] Building CXX object CMakeFiles/yaml-cpp.dir/src/parse.cpp.o
+In file included from /var/lib/jenkins/workspace/build-yaml-cpp/yaml-cpp/src/parse.cpp:7:
+/var/lib/jenkins/workspace/build-yaml-cpp/yaml-cpp/include/yaml-cpp/node/impl.h: In member function 'YAML::Node& YAML::Node::operator=(const T&)':
+/var/lib/jenkins/workspace/build-yaml-cpp/yaml-cpp/include/yaml-cpp/node/impl.h:206:11: warning: 'operator=' should return a reference to '*this' [-Weffc++]
+  206 |   return *this;
+      |           ^~~~
+[ 36%] Building CXX object CMakeFiles/yaml-cpp.dir/src/parser.cpp.o
+[ 37%] Building CXX object CMakeFiles/yaml-cpp.dir/src/regex_yaml.cpp.o
+[ 39%] Building CXX object CMakeFiles/yaml-cpp.dir/src/scanner.cpp.o
+[ 40%] Building CXX object CMakeFiles/yaml-cpp.dir/src/scanscalar.cpp.o
+[ 42%] Building CXX object CMakeFiles/yaml-cpp.dir/src/scantag.cpp.o
+[ 44%] Building CXX object CMakeFiles/yaml-cpp.dir/src/scantoken.cpp.o
+[ 45%] Building CXX object CMakeFiles/yaml-cpp.dir/src/simplekey.cpp.o
+[ 47%] Building CXX object CMakeFiles/yaml-cpp.dir/src/singledocparser.cpp.o
+[ 49%] Building CXX object CMakeFiles/yaml-cpp.dir/src/stream.cpp.o
+[ 50%] Building CXX object CMakeFiles/yaml-cpp.dir/src/tag.cpp.o
+[ 52%] Linking CXX static library libyaml-cpp.a
+[ 52%] Built target yaml-cpp
+Scanning dependencies of target gtest
+[ 54%] Building CXX object test/prefix/googletest/CMakeFiles/gtest.dir/src/gtest-all.cc.o
+[ 55%] Linking CXX static library ../../../lib/libgtest.a
+[ 55%] Built target gtest
+Scanning dependencies of target gmock
+[ 57%] Building CXX object test/prefix/googlemock/CMakeFiles/gmock.dir/src/gmock-all.cc.o
+[ 59%] Linking CXX static library ../../../lib/libgmock.a
+[ 59%] Built target gmock
+Scanning dependencies of target yaml-cpp-tests
+[ 60%] Building CXX object test/CMakeFiles/yaml-cpp-tests.dir/binary_test.cpp.o
+[ 62%] Building CXX object test/CMakeFiles/yaml-cpp-tests.dir/integration/emitter_test.cpp.o
+[ 63%] Building CXX object test/CMakeFiles/yaml-cpp-tests.dir/integration/encoding_test.cpp.o
+[ 65%] Building CXX object test/CMakeFiles/yaml-cpp-tests.dir/integration/error_messages_test.cpp.o
+[ 67%] Building CXX object test/CMakeFiles/yaml-cpp-tests.dir/integration/gen_emitter_test.cpp.o
+[ 68%] Building CXX object test/CMakeFiles/yaml-cpp-tests.dir/integration/handler_spec_test.cpp.o
+[ 70%] Building CXX object test/CMakeFiles/yaml-cpp-tests.dir/integration/handler_test.cpp.o
+[ 72%] Building CXX object test/CMakeFiles/yaml-cpp-tests.dir/integration/load_node_test.cpp.o
+[ 73%] Building CXX object test/CMakeFiles/yaml-cpp-tests.dir/integration/node_spec_test.cpp.o
+[ 75%] Building CXX object test/CMakeFiles/yaml-cpp-tests.dir/main.cpp.o
+[ 77%] Building CXX object test/CMakeFiles/yaml-cpp-tests.dir/node/node_test.cpp.o
+[ 78%] Building CXX object test/CMakeFiles/yaml-cpp-tests.dir/ostream_wrapper_test.cpp.o
+[ 80%] Building CXX object test/CMakeFiles/yaml-cpp-tests.dir/parser_test.cpp.o
+[ 81%] Building CXX object test/CMakeFiles/yaml-cpp-tests.dir/regex_test.cpp.o
+[ 83%] Linking CXX executable yaml-cpp-tests
+[ 83%] Built target yaml-cpp-tests
+Scanning dependencies of target gmock_main
+[ 85%] Building CXX object test/prefix/googlemock/CMakeFiles/gmock_main.dir/src/gmock_main.cc.o
+[ 86%] Linking CXX static library ../../../lib/libgmock_main.a
+[ 86%] Built target gmock_main
+Scanning dependencies of target gtest_main
+[ 88%] Building CXX object test/prefix/googletest/CMakeFiles/gtest_main.dir/src/gtest_main.cc.o
+[ 90%] Linking CXX static library ../../../lib/libgtest_main.a
+[ 90%] Built target gtest_main
+Scanning dependencies of target yaml-cpp-read
+[ 91%] Building CXX object util/CMakeFiles/yaml-cpp-read.dir/read.cpp.o
+[ 93%] Linking CXX executable read
+[ 93%] Built target yaml-cpp-read
+Scanning dependencies of target yaml-cpp-parse
+[ 95%] Building CXX object util/CMakeFiles/yaml-cpp-parse.dir/parse.cpp.o
+[ 96%] Linking CXX executable parse
+[ 96%] Built target yaml-cpp-parse
+Scanning dependencies of target yaml-cpp-sandbox
+[ 98%] Building CXX object util/CMakeFiles/yaml-cpp-sandbox.dir/sandbox.cpp.o
+[100%] Linking CXX executable sandbox
+[100%] Built target yaml-cpp-sandbox
+[Pipeline] }
+[Pipeline] // dir
+[Pipeline] }
+$ docker stop --time=1 8ffae092df70463506e3ef2b70ecb3dc6c092204f9f8d594a046a706abb9bb7d
+$ docker rm -f 8ffae092df70463506e3ef2b70ecb3dc6c092204f9f8d594a046a706abb9bb7d
+[Pipeline] // withDockerContainer
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Archive artifact)
+[Pipeline] sh
++ + cut -d   -f 2
+grep Version
++ cat yaml-cpp/build/yaml-cpp.pc
++ VERSION=0.7.0
++ tar -zcvf yaml-cpp-0.7.0.tar.gz yaml-cpp/build
+yaml-cpp/build/
+yaml-cpp/build/lib/
+yaml-cpp/build/lib/libgtest_main.a
+yaml-cpp/build/lib/libgmock_main.a
+yaml-cpp/build/lib/libgmock.a
+yaml-cpp/build/lib/libgtest.a
+yaml-cpp/build/CMakeFiles/
+yaml-cpp/build/CMakeFiles/ExperimentalMemCheck.dir/
+yaml-cpp/build/CMakeFiles/ExperimentalMemCheck.dir/progress.make
+yaml-cpp/build/CMakeFiles/ExperimentalMemCheck.dir/cmake_clean.cmake
+yaml-cpp/build/CMakeFiles/ExperimentalMemCheck.dir/DependInfo.cmake
+yaml-cpp/build/CMakeFiles/ExperimentalMemCheck.dir/build.make
+yaml-cpp/build/CMakeFiles/Makefile2
+yaml-cpp/build/CMakeFiles/Nightly.dir/
+yaml-cpp/build/CMakeFiles/Nightly.dir/progress.make
+yaml-cpp/build/CMakeFiles/Nightly.dir/cmake_clean.cmake
+yaml-cpp/build/CMakeFiles/Nightly.dir/DependInfo.cmake
+yaml-cpp/build/CMakeFiles/Nightly.dir/build.make
+yaml-cpp/build/CMakeFiles/CMakeTmp/
+yaml-cpp/build/CMakeFiles/cmake.verify_globs
+yaml-cpp/build/CMakeFiles/NightlyMemoryCheck.dir/
+yaml-cpp/build/CMakeFiles/NightlyMemoryCheck.dir/progress.make
+yaml-cpp/build/CMakeFiles/NightlyMemoryCheck.dir/cmake_clean.cmake
+yaml-cpp/build/CMakeFiles/NightlyMemoryCheck.dir/DependInfo.cmake
+yaml-cpp/build/CMakeFiles/NightlyMemoryCheck.dir/build.make
+yaml-cpp/build/CMakeFiles/ContinuousStart.dir/
+yaml-cpp/build/CMakeFiles/ContinuousStart.dir/progress.make
+yaml-cpp/build/CMakeFiles/ContinuousStart.dir/cmake_clean.cmake
+yaml-cpp/build/CMakeFiles/ContinuousStart.dir/DependInfo.cmake
+yaml-cpp/build/CMakeFiles/ContinuousStart.dir/build.make
+yaml-cpp/build/CMakeFiles/CMakeRuleHashes.txt
+yaml-cpp/build/CMakeFiles/NightlyMemCheck.dir/
+yaml-cpp/build/CMakeFiles/NightlyMemCheck.dir/progress.make
+yaml-cpp/build/CMakeFiles/NightlyMemCheck.dir/cmake_clean.cmake
+yaml-cpp/build/CMakeFiles/NightlyMemCheck.dir/DependInfo.cmake
+yaml-cpp/build/CMakeFiles/NightlyMemCheck.dir/build.make
+yaml-cpp/build/CMakeFiles/yaml-cpp.dir/
+yaml-cpp/build/CMakeFiles/yaml-cpp.dir/CXX.includecache
+yaml-cpp/build/CMakeFiles/yaml-cpp.dir/progress.make
+yaml-cpp/build/CMakeFiles/yaml-cpp.dir/cmake_clean.cmake
+yaml-cpp/build/CMakeFiles/yaml-cpp.dir/DependInfo.cmake
+yaml-cpp/build/CMakeFiles/yaml-cpp.dir/depend.make
+yaml-cpp/build/CMakeFiles/yaml-cpp.dir/cmake_clean_target.cmake
+yaml-cpp/build/CMakeFiles/yaml-cpp.dir/flags.make
+yaml-cpp/build/CMakeFiles/yaml-cpp.dir/depend.internal
+yaml-cpp/build/CMakeFiles/yaml-cpp.dir/build.make
+yaml-cpp/build/CMakeFiles/yaml-cpp.dir/link.txt
+yaml-cpp/build/CMakeFiles/yaml-cpp.dir/src/
+yaml-cpp/build/CMakeFiles/yaml-cpp.dir/src/parse.cpp.o
+yaml-cpp/build/CMakeFiles/yaml-cpp.dir/src/emitterutils.cpp.o
+yaml-cpp/build/CMakeFiles/yaml-cpp.dir/src/convert.cpp.o
+yaml-cpp/build/CMakeFiles/yaml-cpp.dir/src/contrib/
+yaml-cpp/build/CMakeFiles/yaml-cpp.dir/src/contrib/graphbuilderadapter.cpp.o
+yaml-cpp/build/CMakeFiles/yaml-cpp.dir/src/contrib/graphbuilder.cpp.o
+yaml-cpp/build/CMakeFiles/yaml-cpp.dir/src/depthguard.cpp.o
+yaml-cpp/build/CMakeFiles/yaml-cpp.dir/src/scanner.cpp.o
+yaml-cpp/build/CMakeFiles/yaml-cpp.dir/src/memory.cpp.o
+yaml-cpp/build/CMakeFiles/yaml-cpp.dir/src/parser.cpp.o
+yaml-cpp/build/CMakeFiles/yaml-cpp.dir/src/nodeevents.cpp.o
+yaml-cpp/build/CMakeFiles/yaml-cpp.dir/src/scanscalar.cpp.o
+yaml-cpp/build/CMakeFiles/yaml-cpp.dir/src/emitfromevents.cpp.o
+yaml-cpp/build/CMakeFiles/yaml-cpp.dir/src/node.cpp.o
+yaml-cpp/build/CMakeFiles/yaml-cpp.dir/src/stream.cpp.o
+yaml-cpp/build/CMakeFiles/yaml-cpp.dir/src/null.cpp.o
+yaml-cpp/build/CMakeFiles/yaml-cpp.dir/src/regex_yaml.cpp.o
+yaml-cpp/build/CMakeFiles/yaml-cpp.dir/src/exp.cpp.o
+yaml-cpp/build/CMakeFiles/yaml-cpp.dir/src/singledocparser.cpp.o
+yaml-cpp/build/CMakeFiles/yaml-cpp.dir/src/directives.cpp.o
+yaml-cpp/build/CMakeFiles/yaml-cpp.dir/src/scantoken.cpp.o
+yaml-cpp/build/CMakeFiles/yaml-cpp.dir/src/scantag.cpp.o
+yaml-cpp/build/CMakeFiles/yaml-cpp.dir/src/emitter.cpp.o
+yaml-cpp/build/CMakeFiles/yaml-cpp.dir/src/emit.cpp.o
+yaml-cpp/build/CMakeFiles/yaml-cpp.dir/src/tag.cpp.o
+yaml-cpp/build/CMakeFiles/yaml-cpp.dir/src/exceptions.cpp.o
+yaml-cpp/build/CMakeFiles/yaml-cpp.dir/src/nodebuilder.cpp.o
+yaml-cpp/build/CMakeFiles/yaml-cpp.dir/src/node_data.cpp.o
+yaml-cpp/build/CMakeFiles/yaml-cpp.dir/src/ostream_wrapper.cpp.o
+yaml-cpp/build/CMakeFiles/yaml-cpp.dir/src/simplekey.cpp.o
+yaml-cpp/build/CMakeFiles/yaml-cpp.dir/src/binary.cpp.o
+yaml-cpp/build/CMakeFiles/yaml-cpp.dir/src/emitterstate.cpp.o
+yaml-cpp/build/CMakeFiles/ExperimentalStart.dir/
+yaml-cpp/build/CMakeFiles/ExperimentalStart.dir/progress.make
+yaml-cpp/build/CMakeFiles/ExperimentalStart.dir/cmake_clean.cmake
+yaml-cpp/build/CMakeFiles/ExperimentalStart.dir/DependInfo.cmake
+yaml-cpp/build/CMakeFiles/ExperimentalStart.dir/build.make
+yaml-cpp/build/CMakeFiles/Makefile.cmake
+yaml-cpp/build/CMakeFiles/NightlyConfigure.dir/
+yaml-cpp/build/CMakeFiles/NightlyConfigure.dir/progress.make
+yaml-cpp/build/CMakeFiles/NightlyConfigure.dir/cmake_clean.cmake
+yaml-cpp/build/CMakeFiles/NightlyConfigure.dir/DependInfo.cmake
+yaml-cpp/build/CMakeFiles/NightlyConfigure.dir/build.make
+yaml-cpp/build/CMakeFiles/ContinuousBuild.dir/
+yaml-cpp/build/CMakeFiles/ContinuousBuild.dir/progress.make
+yaml-cpp/build/CMakeFiles/ContinuousBuild.dir/cmake_clean.cmake
+yaml-cpp/build/CMakeFiles/ContinuousBuild.dir/DependInfo.cmake
+yaml-cpp/build/CMakeFiles/ContinuousBuild.dir/build.make
+yaml-cpp/build/CMakeFiles/NightlyTest.dir/
+yaml-cpp/build/CMakeFiles/NightlyTest.dir/progress.make
+yaml-cpp/build/CMakeFiles/NightlyTest.dir/cmake_clean.cmake
+yaml-cpp/build/CMakeFiles/NightlyTest.dir/DependInfo.cmake
+yaml-cpp/build/CMakeFiles/NightlyTest.dir/build.make
+yaml-cpp/build/CMakeFiles/NightlyBuild.dir/
+yaml-cpp/build/CMakeFiles/NightlyBuild.dir/progress.make
+yaml-cpp/build/CMakeFiles/NightlyBuild.dir/cmake_clean.cmake
+yaml-cpp/build/CMakeFiles/NightlyBuild.dir/DependInfo.cmake
+yaml-cpp/build/CMakeFiles/NightlyBuild.dir/build.make
+yaml-cpp/build/CMakeFiles/NightlySubmit.dir/
+yaml-cpp/build/CMakeFiles/NightlySubmit.dir/progress.make
+yaml-cpp/build/CMakeFiles/NightlySubmit.dir/cmake_clean.cmake
+yaml-cpp/build/CMakeFiles/NightlySubmit.dir/DependInfo.cmake
+yaml-cpp/build/CMakeFiles/NightlySubmit.dir/build.make
+yaml-cpp/build/CMakeFiles/CMakeDirectoryInformation.cmake
+yaml-cpp/build/CMakeFiles/ExperimentalBuild.dir/
+yaml-cpp/build/CMakeFiles/ExperimentalBuild.dir/progress.make
+yaml-cpp/build/CMakeFiles/ExperimentalBuild.dir/cmake_clean.cmake
+yaml-cpp/build/CMakeFiles/ExperimentalBuild.dir/DependInfo.cmake
+yaml-cpp/build/CMakeFiles/ExperimentalBuild.dir/build.make
+yaml-cpp/build/CMakeFiles/ExperimentalCoverage.dir/
+yaml-cpp/build/CMakeFiles/ExperimentalCoverage.dir/progress.make
+yaml-cpp/build/CMakeFiles/ExperimentalCoverage.dir/cmake_clean.cmake
+yaml-cpp/build/CMakeFiles/ExperimentalCoverage.dir/DependInfo.cmake
+yaml-cpp/build/CMakeFiles/ExperimentalCoverage.dir/build.make
+yaml-cpp/build/CMakeFiles/TargetDirectories.txt
+yaml-cpp/build/CMakeFiles/ExperimentalSubmit.dir/
+yaml-cpp/build/CMakeFiles/ExperimentalSubmit.dir/progress.make
+yaml-cpp/build/CMakeFiles/ExperimentalSubmit.dir/cmake_clean.cmake
+yaml-cpp/build/CMakeFiles/ExperimentalSubmit.dir/DependInfo.cmake
+yaml-cpp/build/CMakeFiles/ExperimentalSubmit.dir/build.make
+yaml-cpp/build/CMakeFiles/VerifyGlobs.cmake
+yaml-cpp/build/CMakeFiles/CMakeOutput.log
+yaml-cpp/build/CMakeFiles/ContinuousConfigure.dir/
+yaml-cpp/build/CMakeFiles/ContinuousConfigure.dir/progress.make
+yaml-cpp/build/CMakeFiles/ContinuousConfigure.dir/cmake_clean.cmake
+yaml-cpp/build/CMakeFiles/ContinuousConfigure.dir/DependInfo.cmake
+yaml-cpp/build/CMakeFiles/ContinuousConfigure.dir/build.make
+yaml-cpp/build/CMakeFiles/ContinuousTest.dir/
+yaml-cpp/build/CMakeFiles/ContinuousTest.dir/progress.make
+yaml-cpp/build/CMakeFiles/ContinuousTest.dir/cmake_clean.cmake
+yaml-cpp/build/CMakeFiles/ContinuousTest.dir/DependInfo.cmake
+yaml-cpp/build/CMakeFiles/ContinuousTest.dir/build.make
+yaml-cpp/build/CMakeFiles/Experimental.dir/
+yaml-cpp/build/CMakeFiles/Experimental.dir/progress.make
+yaml-cpp/build/CMakeFiles/Experimental.dir/cmake_clean.cmake
+yaml-cpp/build/CMakeFiles/Experimental.dir/DependInfo.cmake
+yaml-cpp/build/CMakeFiles/Experimental.dir/build.make
+yaml-cpp/build/CMakeFiles/ContinuousMemCheck.dir/
+yaml-cpp/build/CMakeFiles/ContinuousMemCheck.dir/progress.make
+yaml-cpp/build/CMakeFiles/ContinuousMemCheck.dir/cmake_clean.cmake
+yaml-cpp/build/CMakeFiles/ContinuousMemCheck.dir/DependInfo.cmake
+yaml-cpp/build/CMakeFiles/ContinuousMemCheck.dir/build.make
+yaml-cpp/build/CMakeFiles/progress.marks
+yaml-cpp/build/CMakeFiles/ExperimentalConfigure.dir/
+yaml-cpp/build/CMakeFiles/ExperimentalConfigure.dir/progress.make
+yaml-cpp/build/CMakeFiles/ExperimentalConfigure.dir/cmake_clean.cmake
+yaml-cpp/build/CMakeFiles/ExperimentalConfigure.dir/DependInfo.cmake
+yaml-cpp/build/CMakeFiles/ExperimentalConfigure.dir/build.make
+yaml-cpp/build/CMakeFiles/3.16.3/
+yaml-cpp/build/CMakeFiles/3.16.3/CMakeCCompiler.cmake
+yaml-cpp/build/CMakeFiles/3.16.3/CompilerIdC/
+yaml-cpp/build/CMakeFiles/3.16.3/CompilerIdC/tmp/
+yaml-cpp/build/CMakeFiles/3.16.3/CompilerIdC/CMakeCCompilerId.c
+yaml-cpp/build/CMakeFiles/3.16.3/CompilerIdC/a.out
+yaml-cpp/build/CMakeFiles/3.16.3/CMakeDetermineCompilerABI_C.bin
+yaml-cpp/build/CMakeFiles/3.16.3/CMakeSystem.cmake
+yaml-cpp/build/CMakeFiles/3.16.3/CMakeDetermineCompilerABI_CXX.bin
+yaml-cpp/build/CMakeFiles/3.16.3/CMakeCXXCompiler.cmake
+yaml-cpp/build/CMakeFiles/3.16.3/CompilerIdCXX/
+yaml-cpp/build/CMakeFiles/3.16.3/CompilerIdCXX/tmp/
+yaml-cpp/build/CMakeFiles/3.16.3/CompilerIdCXX/CMakeCXXCompilerId.cpp
+yaml-cpp/build/CMakeFiles/3.16.3/CompilerIdCXX/a.out
+yaml-cpp/build/CMakeFiles/NightlyUpdate.dir/
+yaml-cpp/build/CMakeFiles/NightlyUpdate.dir/progress.make
+yaml-cpp/build/CMakeFiles/NightlyUpdate.dir/cmake_clean.cmake
+yaml-cpp/build/CMakeFiles/NightlyUpdate.dir/DependInfo.cmake
+yaml-cpp/build/CMakeFiles/NightlyUpdate.dir/build.make
+yaml-cpp/build/CMakeFiles/Export/
+yaml-cpp/build/CMakeFiles/Export/share/
+yaml-cpp/build/CMakeFiles/Export/share/cmake/
+yaml-cpp/build/CMakeFiles/Export/share/cmake/yaml-cpp/
+yaml-cpp/build/CMakeFiles/Export/share/cmake/yaml-cpp/yaml-cpp-targets-noconfig.cmake
+yaml-cpp/build/CMakeFiles/Export/share/cmake/yaml-cpp/yaml-cpp-targets.cmake
+yaml-cpp/build/CMakeFiles/NightlyStart.dir/
+yaml-cpp/build/CMakeFiles/NightlyStart.dir/progress.make
+yaml-cpp/build/CMakeFiles/NightlyStart.dir/cmake_clean.cmake
+yaml-cpp/build/CMakeFiles/NightlyStart.dir/DependInfo.cmake
+yaml-cpp/build/CMakeFiles/NightlyStart.dir/build.make
+yaml-cpp/build/CMakeFiles/ContinuousSubmit.dir/
+yaml-cpp/build/CMakeFiles/ContinuousSubmit.dir/progress.make
+yaml-cpp/build/CMakeFiles/ContinuousSubmit.dir/cmake_clean.cmake
+yaml-cpp/build/CMakeFiles/ContinuousSubmit.dir/DependInfo.cmake
+yaml-cpp/build/CMakeFiles/ContinuousSubmit.dir/build.make
+yaml-cpp/build/CMakeFiles/ContinuousUpdate.dir/
+yaml-cpp/build/CMakeFiles/ContinuousUpdate.dir/progress.make
+yaml-cpp/build/CMakeFiles/ContinuousUpdate.dir/cmake_clean.cmake
+yaml-cpp/build/CMakeFiles/ContinuousUpdate.dir/DependInfo.cmake
+yaml-cpp/build/CMakeFiles/ContinuousUpdate.dir/build.make
+yaml-cpp/build/CMakeFiles/Continuous.dir/
+yaml-cpp/build/CMakeFiles/Continuous.dir/progress.make
+yaml-cpp/build/CMakeFiles/Continuous.dir/cmake_clean.cmake
+yaml-cpp/build/CMakeFiles/Continuous.dir/DependInfo.cmake
+yaml-cpp/build/CMakeFiles/Continuous.dir/build.make
+yaml-cpp/build/CMakeFiles/CMakeError.log
+yaml-cpp/build/CMakeFiles/ExperimentalUpdate.dir/
+yaml-cpp/build/CMakeFiles/ExperimentalUpdate.dir/progress.make
+yaml-cpp/build/CMakeFiles/ExperimentalUpdate.dir/cmake_clean.cmake
+yaml-cpp/build/CMakeFiles/ExperimentalUpdate.dir/DependInfo.cmake
+yaml-cpp/build/CMakeFiles/ExperimentalUpdate.dir/build.make
+yaml-cpp/build/CMakeFiles/cmake.check_cache
+yaml-cpp/build/CMakeFiles/CheckLibraryExists/
+yaml-cpp/build/CMakeFiles/CheckLibraryExists/CheckFunctionExists.cxx
+yaml-cpp/build/CMakeFiles/NightlyCoverage.dir/
+yaml-cpp/build/CMakeFiles/NightlyCoverage.dir/progress.make
+yaml-cpp/build/CMakeFiles/NightlyCoverage.dir/cmake_clean.cmake
+yaml-cpp/build/CMakeFiles/NightlyCoverage.dir/DependInfo.cmake
+yaml-cpp/build/CMakeFiles/NightlyCoverage.dir/build.make
+yaml-cpp/build/CMakeFiles/ContinuousCoverage.dir/
+yaml-cpp/build/CMakeFiles/ContinuousCoverage.dir/progress.make
+yaml-cpp/build/CMakeFiles/ContinuousCoverage.dir/cmake_clean.cmake
+yaml-cpp/build/CMakeFiles/ContinuousCoverage.dir/DependInfo.cmake
+yaml-cpp/build/CMakeFiles/ContinuousCoverage.dir/build.make
+yaml-cpp/build/CMakeFiles/ExperimentalTest.dir/
+yaml-cpp/build/CMakeFiles/ExperimentalTest.dir/progress.make
+yaml-cpp/build/CMakeFiles/ExperimentalTest.dir/cmake_clean.cmake
+yaml-cpp/build/CMakeFiles/ExperimentalTest.dir/DependInfo.cmake
+yaml-cpp/build/CMakeFiles/ExperimentalTest.dir/build.make
+yaml-cpp/build/DartConfiguration.tcl
+yaml-cpp/build/yaml-cpp-config-version.cmake
+yaml-cpp/build/libyaml-cpp.a
+yaml-cpp/build/Testing/
+yaml-cpp/build/Testing/Temporary/
+yaml-cpp/build/CMakeCache.txt
+yaml-cpp/build/CTestTestfile.cmake
+yaml-cpp/build/bin/
+yaml-cpp/build/Makefile
+yaml-cpp/build/util/
+yaml-cpp/build/util/CMakeFiles/
+yaml-cpp/build/util/CMakeFiles/yaml-cpp-parse.dir/
+yaml-cpp/build/util/CMakeFiles/yaml-cpp-parse.dir/parse.cpp.o
+yaml-cpp/build/util/CMakeFiles/yaml-cpp-parse.dir/CXX.includecache
+yaml-cpp/build/util/CMakeFiles/yaml-cpp-parse.dir/progress.make
+yaml-cpp/build/util/CMakeFiles/yaml-cpp-parse.dir/cmake_clean.cmake
+yaml-cpp/build/util/CMakeFiles/yaml-cpp-parse.dir/DependInfo.cmake
+yaml-cpp/build/util/CMakeFiles/yaml-cpp-parse.dir/depend.make
+yaml-cpp/build/util/CMakeFiles/yaml-cpp-parse.dir/flags.make
+yaml-cpp/build/util/CMakeFiles/yaml-cpp-parse.dir/depend.internal
+yaml-cpp/build/util/CMakeFiles/yaml-cpp-parse.dir/build.make
+yaml-cpp/build/util/CMakeFiles/yaml-cpp-parse.dir/link.txt
+yaml-cpp/build/util/CMakeFiles/yaml-cpp-read.dir/
+yaml-cpp/build/util/CMakeFiles/yaml-cpp-read.dir/CXX.includecache
+yaml-cpp/build/util/CMakeFiles/yaml-cpp-read.dir/progress.make
+yaml-cpp/build/util/CMakeFiles/yaml-cpp-read.dir/cmake_clean.cmake
+yaml-cpp/build/util/CMakeFiles/yaml-cpp-read.dir/DependInfo.cmake
+yaml-cpp/build/util/CMakeFiles/yaml-cpp-read.dir/depend.make
+yaml-cpp/build/util/CMakeFiles/yaml-cpp-read.dir/read.cpp.o
+yaml-cpp/build/util/CMakeFiles/yaml-cpp-read.dir/flags.make
+yaml-cpp/build/util/CMakeFiles/yaml-cpp-read.dir/depend.internal
+yaml-cpp/build/util/CMakeFiles/yaml-cpp-read.dir/build.make
+yaml-cpp/build/util/CMakeFiles/yaml-cpp-read.dir/link.txt
+yaml-cpp/build/util/CMakeFiles/CMakeDirectoryInformation.cmake
+yaml-cpp/build/util/CMakeFiles/progress.marks
+yaml-cpp/build/util/CMakeFiles/yaml-cpp-sandbox.dir/
+yaml-cpp/build/util/CMakeFiles/yaml-cpp-sandbox.dir/CXX.includecache
+yaml-cpp/build/util/CMakeFiles/yaml-cpp-sandbox.dir/progress.make
+yaml-cpp/build/util/CMakeFiles/yaml-cpp-sandbox.dir/cmake_clean.cmake
+yaml-cpp/build/util/CMakeFiles/yaml-cpp-sandbox.dir/sandbox.cpp.o
+yaml-cpp/build/util/CMakeFiles/yaml-cpp-sandbox.dir/DependInfo.cmake
+yaml-cpp/build/util/CMakeFiles/yaml-cpp-sandbox.dir/depend.make
+yaml-cpp/build/util/CMakeFiles/yaml-cpp-sandbox.dir/flags.make
+yaml-cpp/build/util/CMakeFiles/yaml-cpp-sandbox.dir/depend.internal
+yaml-cpp/build/util/CMakeFiles/yaml-cpp-sandbox.dir/build.make
+yaml-cpp/build/util/CMakeFiles/yaml-cpp-sandbox.dir/link.txt
+yaml-cpp/build/util/sandbox
+yaml-cpp/build/util/parse
+yaml-cpp/build/util/CTestTestfile.cmake
+yaml-cpp/build/util/Makefile
+yaml-cpp/build/util/cmake_install.cmake
+yaml-cpp/build/util/read
+yaml-cpp/build/yaml-cpp.pc
+yaml-cpp/build/test/
+yaml-cpp/build/test/CMakeFiles/
+yaml-cpp/build/test/CMakeFiles/CMakeDirectoryInformation.cmake
+yaml-cpp/build/test/CMakeFiles/progress.marks
+yaml-cpp/build/test/CMakeFiles/yaml-cpp-tests.dir/
+yaml-cpp/build/test/CMakeFiles/yaml-cpp-tests.dir/CXX.includecache
+yaml-cpp/build/test/CMakeFiles/yaml-cpp-tests.dir/progress.make
+yaml-cpp/build/test/CMakeFiles/yaml-cpp-tests.dir/cmake_clean.cmake
+yaml-cpp/build/test/CMakeFiles/yaml-cpp-tests.dir/integration/
+yaml-cpp/build/test/CMakeFiles/yaml-cpp-tests.dir/integration/node_spec_test.cpp.o
+yaml-cpp/build/test/CMakeFiles/yaml-cpp-tests.dir/integration/error_messages_test.cpp.o
+yaml-cpp/build/test/CMakeFiles/yaml-cpp-tests.dir/integration/handler_spec_test.cpp.o
+yaml-cpp/build/test/CMakeFiles/yaml-cpp-tests.dir/integration/load_node_test.cpp.o
+yaml-cpp/build/test/CMakeFiles/yaml-cpp-tests.dir/integration/gen_emitter_test.cpp.o
+yaml-cpp/build/test/CMakeFiles/yaml-cpp-tests.dir/integration/handler_test.cpp.o
+yaml-cpp/build/test/CMakeFiles/yaml-cpp-tests.dir/integration/emitter_test.cpp.o
+yaml-cpp/build/test/CMakeFiles/yaml-cpp-tests.dir/integration/encoding_test.cpp.o
+yaml-cpp/build/test/CMakeFiles/yaml-cpp-tests.dir/DependInfo.cmake
+yaml-cpp/build/test/CMakeFiles/yaml-cpp-tests.dir/depend.make
+yaml-cpp/build/test/CMakeFiles/yaml-cpp-tests.dir/flags.make
+yaml-cpp/build/test/CMakeFiles/yaml-cpp-tests.dir/regex_test.cpp.o
+yaml-cpp/build/test/CMakeFiles/yaml-cpp-tests.dir/ostream_wrapper_test.cpp.o
+yaml-cpp/build/test/CMakeFiles/yaml-cpp-tests.dir/parser_test.cpp.o
+yaml-cpp/build/test/CMakeFiles/yaml-cpp-tests.dir/depend.internal
+yaml-cpp/build/test/CMakeFiles/yaml-cpp-tests.dir/node/
+yaml-cpp/build/test/CMakeFiles/yaml-cpp-tests.dir/node/node_test.cpp.o
+yaml-cpp/build/test/CMakeFiles/yaml-cpp-tests.dir/build.make
+yaml-cpp/build/test/CMakeFiles/yaml-cpp-tests.dir/main.cpp.o
+yaml-cpp/build/test/CMakeFiles/yaml-cpp-tests.dir/link.txt
+yaml-cpp/build/test/CMakeFiles/yaml-cpp-tests.dir/binary_test.cpp.o
+yaml-cpp/build/test/CTestTestfile.cmake
+yaml-cpp/build/test/Makefile
+yaml-cpp/build/test/yaml-cpp-tests
+yaml-cpp/build/test/cmake_install.cmake
+yaml-cpp/build/test/prefix/
+yaml-cpp/build/test/prefix/CMakeFiles/
+yaml-cpp/build/test/prefix/CMakeFiles/CMakeDirectoryInformation.cmake
+yaml-cpp/build/test/prefix/CMakeFiles/progress.marks
+yaml-cpp/build/test/prefix/googlemock/
+yaml-cpp/build/test/prefix/googlemock/CMakeFiles/
+yaml-cpp/build/test/prefix/googlemock/CMakeFiles/gmock_main.dir/
+yaml-cpp/build/test/prefix/googlemock/CMakeFiles/gmock_main.dir/CXX.includecache
+yaml-cpp/build/test/prefix/googlemock/CMakeFiles/gmock_main.dir/progress.make
+yaml-cpp/build/test/prefix/googlemock/CMakeFiles/gmock_main.dir/cmake_clean.cmake
+yaml-cpp/build/test/prefix/googlemock/CMakeFiles/gmock_main.dir/DependInfo.cmake
+yaml-cpp/build/test/prefix/googlemock/CMakeFiles/gmock_main.dir/depend.make
+yaml-cpp/build/test/prefix/googlemock/CMakeFiles/gmock_main.dir/cmake_clean_target.cmake
+yaml-cpp/build/test/prefix/googlemock/CMakeFiles/gmock_main.dir/flags.make
+yaml-cpp/build/test/prefix/googlemock/CMakeFiles/gmock_main.dir/depend.internal
+yaml-cpp/build/test/prefix/googlemock/CMakeFiles/gmock_main.dir/build.make
+yaml-cpp/build/test/prefix/googlemock/CMakeFiles/gmock_main.dir/link.txt
+yaml-cpp/build/test/prefix/googlemock/CMakeFiles/gmock_main.dir/src/
+yaml-cpp/build/test/prefix/googlemock/CMakeFiles/gmock_main.dir/src/gmock_main.cc.o
+yaml-cpp/build/test/prefix/googlemock/CMakeFiles/gmock.dir/
+yaml-cpp/build/test/prefix/googlemock/CMakeFiles/gmock.dir/CXX.includecache
+yaml-cpp/build/test/prefix/googlemock/CMakeFiles/gmock.dir/progress.make
+yaml-cpp/build/test/prefix/googlemock/CMakeFiles/gmock.dir/cmake_clean.cmake
+yaml-cpp/build/test/prefix/googlemock/CMakeFiles/gmock.dir/DependInfo.cmake
+yaml-cpp/build/test/prefix/googlemock/CMakeFiles/gmock.dir/depend.make
+yaml-cpp/build/test/prefix/googlemock/CMakeFiles/gmock.dir/cmake_clean_target.cmake
+yaml-cpp/build/test/prefix/googlemock/CMakeFiles/gmock.dir/flags.make
+yaml-cpp/build/test/prefix/googlemock/CMakeFiles/gmock.dir/depend.internal
+yaml-cpp/build/test/prefix/googlemock/CMakeFiles/gmock.dir/build.make
+yaml-cpp/build/test/prefix/googlemock/CMakeFiles/gmock.dir/link.txt
+yaml-cpp/build/test/prefix/googlemock/CMakeFiles/gmock.dir/src/
+yaml-cpp/build/test/prefix/googlemock/CMakeFiles/gmock.dir/src/gmock-all.cc.o
+yaml-cpp/build/test/prefix/googlemock/CMakeFiles/CMakeDirectoryInformation.cmake
+yaml-cpp/build/test/prefix/googlemock/CMakeFiles/progress.marks
+yaml-cpp/build/test/prefix/googlemock/CTestTestfile.cmake
+yaml-cpp/build/test/prefix/googlemock/Makefile
+yaml-cpp/build/test/prefix/googlemock/cmake_install.cmake
+yaml-cpp/build/test/prefix/CTestTestfile.cmake
+yaml-cpp/build/test/prefix/Makefile
+yaml-cpp/build/test/prefix/cmake_install.cmake
+yaml-cpp/build/test/prefix/googletest/
+yaml-cpp/build/test/prefix/googletest/CMakeFiles/
+yaml-cpp/build/test/prefix/googletest/CMakeFiles/gtest.dir/
+yaml-cpp/build/test/prefix/googletest/CMakeFiles/gtest.dir/CXX.includecache
+yaml-cpp/build/test/prefix/googletest/CMakeFiles/gtest.dir/progress.make
+yaml-cpp/build/test/prefix/googletest/CMakeFiles/gtest.dir/cmake_clean.cmake
+yaml-cpp/build/test/prefix/googletest/CMakeFiles/gtest.dir/DependInfo.cmake
+yaml-cpp/build/test/prefix/googletest/CMakeFiles/gtest.dir/depend.make
+yaml-cpp/build/test/prefix/googletest/CMakeFiles/gtest.dir/cmake_clean_target.cmake
+yaml-cpp/build/test/prefix/googletest/CMakeFiles/gtest.dir/flags.make
+yaml-cpp/build/test/prefix/googletest/CMakeFiles/gtest.dir/depend.internal
+yaml-cpp/build/test/prefix/googletest/CMakeFiles/gtest.dir/build.make
+yaml-cpp/build/test/prefix/googletest/CMakeFiles/gtest.dir/link.txt
+yaml-cpp/build/test/prefix/googletest/CMakeFiles/gtest.dir/src/
+yaml-cpp/build/test/prefix/googletest/CMakeFiles/gtest.dir/src/gtest-all.cc.o
+yaml-cpp/build/test/prefix/googletest/CMakeFiles/gtest_main.dir/
+yaml-cpp/build/test/prefix/googletest/CMakeFiles/gtest_main.dir/CXX.includecache
+yaml-cpp/build/test/prefix/googletest/CMakeFiles/gtest_main.dir/progress.make
+yaml-cpp/build/test/prefix/googletest/CMakeFiles/gtest_main.dir/cmake_clean.cmake
+yaml-cpp/build/test/prefix/googletest/CMakeFiles/gtest_main.dir/DependInfo.cmake
+yaml-cpp/build/test/prefix/googletest/CMakeFiles/gtest_main.dir/depend.make
+yaml-cpp/build/test/prefix/googletest/CMakeFiles/gtest_main.dir/cmake_clean_target.cmake
+yaml-cpp/build/test/prefix/googletest/CMakeFiles/gtest_main.dir/flags.make
+yaml-cpp/build/test/prefix/googletest/CMakeFiles/gtest_main.dir/depend.internal
+yaml-cpp/build/test/prefix/googletest/CMakeFiles/gtest_main.dir/build.make
+yaml-cpp/build/test/prefix/googletest/CMakeFiles/gtest_main.dir/link.txt
+yaml-cpp/build/test/prefix/googletest/CMakeFiles/gtest_main.dir/src/
+yaml-cpp/build/test/prefix/googletest/CMakeFiles/gtest_main.dir/src/gtest_main.cc.o
+yaml-cpp/build/test/prefix/googletest/CMakeFiles/CMakeDirectoryInformation.cmake
+yaml-cpp/build/test/prefix/googletest/CMakeFiles/progress.marks
+yaml-cpp/build/test/prefix/googletest/CMakeFiles/Export/
+yaml-cpp/build/test/prefix/googletest/CMakeFiles/Export/lib/
+yaml-cpp/build/test/prefix/googletest/CMakeFiles/Export/lib/cmake/
+yaml-cpp/build/test/prefix/googletest/CMakeFiles/Export/lib/cmake/GTest/
+yaml-cpp/build/test/prefix/googletest/CMakeFiles/Export/lib/cmake/GTest/GTestTargets.cmake
+yaml-cpp/build/test/prefix/googletest/CMakeFiles/Export/lib/cmake/GTest/GTestTargets-noconfig.cmake
+yaml-cpp/build/test/prefix/googletest/CTestTestfile.cmake
+yaml-cpp/build/test/prefix/googletest/Makefile
+yaml-cpp/build/test/prefix/googletest/cmake_install.cmake
+yaml-cpp/build/test/prefix/googletest/generated/
+yaml-cpp/build/test/prefix/googletest/generated/GTestConfig.cmake
+yaml-cpp/build/test/prefix/googletest/generated/gtest_main.pc
+yaml-cpp/build/test/prefix/googletest/generated/GTestConfigVersion.cmake
+yaml-cpp/build/test/prefix/googletest/generated/gmock_main.pc
+yaml-cpp/build/test/prefix/googletest/generated/gtest.pc
+yaml-cpp/build/test/prefix/googletest/generated/gmock.pc
+yaml-cpp/build/yaml-cpp-config.cmake
+yaml-cpp/build/cmake_install.cmake
+[Pipeline] archiveArtifacts
+Archiving artifacts
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] deleteDir
+[Pipeline] }
+[Pipeline] // node
+[Pipeline] End of Pipeline
+Finished: SUCCESS
